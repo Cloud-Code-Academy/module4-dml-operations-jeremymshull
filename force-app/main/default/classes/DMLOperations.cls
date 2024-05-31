@@ -178,9 +178,23 @@ public with sharing class DMLOperations {
      * @param oppNames The list of Opportunity names.
      */
     public static void upsertOpportunities(String accountName, List<String> oppNames) {
+        Account acc = new Account(Name = accountName);
+        upsert acc;
+        
+        List<Account> accounts = [SELECT Id FROM Account WHERE Name = :accountName];     
+        
+        List<Opportunity> oppsToUpsert = new List<Opportunity>();
+
         // Loop through each Opportunity name
+        for (String name : oppNames) {
             // Create an Opportunity with the given name
-            // Add the Opportunity to the list
+            // Add the Opportunity to the list}    
+            Opportunity opp = new Opportunity(Name = name, AccountId = acc.Id, StageName = 'Qualification', CloseDate = Date.today().addMonths(3));
+            oppsToUpsert.add(opp);
+        }
+
+        upsert oppsToUpsert;
+                
     }
     
     /**
