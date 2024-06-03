@@ -214,7 +214,15 @@ public with sharing class DMLOperations {
 		// otherwise, create a new Account and set the description
 
 		// Upsert the Account
-		return null;
+        if (!accounts.isEmpty()) {
+            accounts[0].Description = 'Updated Account';   
+        } else {
+            accounts.add(new Account(Name = accountName, Description = 'New Account'));
+        }
+
+        upsert accounts;
+
+		return accounts[0];
 	}
 
     /**
