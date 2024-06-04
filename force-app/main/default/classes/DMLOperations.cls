@@ -236,14 +236,18 @@ public with sharing class DMLOperations {
 	 */
 	public static void upsertAccountsWithContacts(List<Contact> contactsToUpsert) {
 		// Loop through each Contact
+        for (Contact cont : contactsToUpsert) {
+            // Extract the Account Name from Contact's LastName
+            String accName = cont.LastName;
 
-		// Extract the Account Name from Contact's LastName
+		    // Get the account based on the name or create one if it doesn't exist
+            Account acc = upsertAccount(accName);
 
-		// Get the account based on the name or create one if it doesn't exist
-
-		// Link the Contact to its Account using the Account Id
-
+		    // Link the Contact to its Account using the Account Id
+            cont.AccountId = acc.Id;
+        }	
 		// Upsert the Contacts
+        upsert contactsToUpsert;
 	}
 
     /**
@@ -253,6 +257,9 @@ public with sharing class DMLOperations {
      */
     public static void insertAndDeleteLeads(List<String> leadNames) {
         // Loop through each Lead name
+        // for (String leads : leadNames) {
+        //     Lead leadsToInsert = new Lead();
+        // }
 
         // Insert the Leads
 
